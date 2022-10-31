@@ -1,15 +1,14 @@
 [
 	{
-		"modid": "redstoneflux",
-		"name": "Redstone Flux",
-		"description": "The Redstone Flux API - the cornerstone of Energy Transfer in modded Minecraft since 1.6.4.",
+		"modid": "strilledflux",
+		"name": "Strilled Flux",
+		"description": "Strilled Flux API. A modification of the Redstone Flux API to make compatible with Strilling",
 		"version": "${version}",
-		"credits": "Team CoFH",
-		"logoFile": "assets/redstoneflux/textures/logo.png",
+		"credits": "Team CoFH for the original API and the Helium Team",
+		"logoFile": "assets/strilledflux/textures/strilledlogo.png",
 		"mcversion": "${mc_version}",
-		"url": "http://www.teamcofh.com",
 		"updateUrl": "",
-		"authorList": [ "Team CoFH" ],
+		"authorList": [ "Strilling Creators", "Adrikikicp" ],
 		"parent": "",
 		"screenshots": [],
 		"dependencies": [

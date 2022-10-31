@@ -3,6 +3,13 @@ import java.util.regex.Pattern
 buildscript {
 	repositories {
 		jcenter()
+		mavenCentral()
+		maven {
+		
+		name = "minecraft"
+		url = "https://libraries.minecraft.net"
+		
+		}
 		maven {
 			name = "forge"
 			url = "https://files.minecraftforge.net/maven"
@@ -17,8 +24,8 @@ apply plugin: 'java'
 apply plugin: 'net.minecraftforge.gradle.forge'
 apply plugin: 'maven'
 
-group = "cofh"
-archivesBaseName = "RedstoneFlux"
+group = "enriquitomc-energy"
+archivesBaseName = "StrilledFlux"
 
 targetCompatibility = "1.8"
 sourceCompatibility = "1.8"
@@ -73,88 +80,13 @@ task srcJar(type: Jar) {
 	classifier = 'sources'
 }
 
-task signJar(type: SignJar, dependsOn: reobfJar) {
-	onlyIf {
-		//Skip of keystore is missing.
-		project.hasProperty('cofh_keyStore')
-	}
 
-	if (project.hasProperty('cofh_keyStore')) {
-		keyStore = project.cofh_keyStore
-		alias = project.cofh_keyStoreAlias
-		storePass = project.cofh_keyStorePass
-		keyPass = project.cofh_keyStorePass
-		inputFile = jar.archivePath
-		outputFile = jar.archivePath
-	}
-}
-
-build.dependsOn signJar
 
 artifacts {
 	archives deobfJar
 	archives srcJar
 }
 
-def pullVersion() {
-	def file = file("src/main/java/cofh/redstoneflux/RedstoneFluxProps.java")
-	def version = ""
-	def pattern = Pattern.compile("^\tpublic static final String VERSION = \"([\\d\\.]*)\";\$")
-	file.eachLine { String s ->
-		def matcher = pattern.matcher(s)
-		if (matcher.matches()) {
-			version = matcher.group(1)
-			return
-		}
-	}
-	return version
-}
 
 // Configure upload task.
-uploadArchives {
-	repositories {
-		mavenDeployer {
-			if (project.hasProperty("local_maven") || project.hasProperty("maven_pass")) {
-				if (project.hasProperty("maven_pass")) {
-					println "Uploading to remote maven."
-					repository(url: "https://maven_upload.covers1624.net/") {
-						authentication(userName: "cofh", password: project.getProperty("maven_pass"))
-					}
-				} else {
-					println "Uploading to local maven."
-					repository(url: "file://${local_maven}")
-				}
-				pom {
-					groupId = project.group
-					// Force Maven upload to use the <mcversion>-<version> syntax.
-					artifactId = project.archivesBaseName
-					project {
-						name project.archivesBaseName
-						packaging 'jar'
-						description 'RedstoneFlux'
-						url 'https://github.com/CoFH/RedstoneFlux'
 
-						scm {
-							url 'https://github.com/CoFH/RedstoneFlux'
-							connection 'scm:git:git://github.com/CoFH/RedstoneFlux.git'
-							developerConnection 'scm:git:git@github.com:CoFH/RedstoneFlux.git'
-						}
-
-						issueManagement {
-							system 'github'
-							url 'https://github.com/CoFH/Feedback/issues'
-						}
-
-						developers {
-							developer {
-								id 'TeamCoFH'
-								name 'TeamCoFH'
-								roles { role 'developer' }
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
